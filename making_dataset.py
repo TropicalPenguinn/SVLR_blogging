@@ -17,9 +17,8 @@ class Data_generator:
         
     def _init_distribution_params(self):
         self._distribution_params = {f:{'mean':0, 'std':1}
-                                     for f in range(1, self._feature_dim+1)}  """ 계수 리스트 0번째가 bias이기 때문에 인덱스를
-                                                                               맞추기 위해서 key를 1부터 배분"""    
-    def make_dataset(self,init_noise=false): #dataset을 만들어 봅시다.
+                                     for f in range(1, self._feature_dim+1)}      
+    def make_dataset(self,init_noise=False): #dataset을 만들어 봅시다.
         x_data = np.zeros(shape = (self._n_sample, 1))
         y_data = np.zeros(shape = (self._n_sample, 1)) #데이터 샘플에 맞게 numpy로 행렬을 만든다 nX1 matrix다.
         
@@ -32,15 +31,13 @@ class Data_generator:
             y_data += self._coefficient_list[f_idx]*feature_data #임의로 뿌린 값에 계수를 곱해 y_data를 만든다
         y_data += self._coefficient_list[0]
         
-        if init_noise=True: """만약 잡음을 넣는다고 하면 잡음 역시 정규분포로 뿌린 값을 사용한다. 정확한 통계 증명은 
-                                대학 통계학에서 multi-variable 의 covariance 부분 참고"""
+        if init_noise==True: 
             
-            y_data+=noise*np.random.normal(loc = self._distribution_params[f_idx]['mean'],
-                                            scale = self._distribution_params[f_idx]['std'],
+            y_data+=5*np.random.normal(loc = 0,
+                                            scale =self._noise,
                                             size = (self._n_sample, 1)) 
         
-        self._dataset = np.hstack((x_data, y_data)) """0인 부분 임의로 뿌린 값과 거기에 계수를 곱한 곱까지 하나로 묶어 dataset
-                                                        을 만든다"""
+        self._dataset = np.hstack((x_data, y_data))
         return self._dataset
     
     def set_n_sample(self, n_sample):
